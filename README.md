@@ -28,3 +28,18 @@ To clone this repo, run `git clone https://github.com/mwytock0812/superlists.git
 
 ##Running the Development Server
 After navigating to the `superlists` directory, use the pre-packaged development server that comes with Django by running `python manage.py runserver`. Ensure that the correct conda environmenet is activated.
+
+##Running Functional and Unit Tests
+###Funcitonal Tests
+  1. Navigate to application's top level directory, `/superlists`
+  2. Use Django's built-in testing suite to run functional tests
+  ```
+  python manage.py test functional_tests
+  ```
+
+###Unit Tests
+  1. Navigate to the applicaiton's top level directory, `/superlists`
+  2. Use Django's built-in testing suite to run unit tests
+  ```
+  python manage.py test lists.tests
+  ```
