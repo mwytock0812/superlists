@@ -1,13 +1,22 @@
 import sys
-import unittest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+
 class NewVisitorTest(StaticLiveServerTestCase):
+
 
     @classmethod
     def setUpClass(cls):
+        """
+        Set up live testing server.
+
+        Parses sys.argv for 'liveserver' to enable testing
+        in live deployment environment. Otherwise, uses the
+        TestCase superclass's setUpClass() to set up the
+        StaticLiveServerTestCase.
+        """
         for arg in sys.argv:
             if 'liveserver' in arg:
                 cls.server_url = 'http://' + arg.split('=')[1]
@@ -18,24 +27,50 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """
+        Tear down live testing server.
+
+        Uses TestCase's tearDownClass() method to shut
+        down the live testing server, if running.
+        Otherwise, the tearDown() method will be called.
+        """
         if cls.server_url == cls.live_server_url:
             super().tearDownClass()
 
 
     def setUp(self):
+        """
+        Set up StaticLiveServerTestCase.
+
+        Uses selenium's webdriver as the browser and waits for
+        first instructions.
+        """
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
+        """Quit browser running StaticLiveServerTestCase."""
         self.browser.quit()
 
     def check_for_row_in_list_table(self, row_text):
-        """Helper method for locating right table row"""
+        """
+        Test that row_text is in to-do list table.
+
+        Iterates through each row in the to-do list table,
+        checking for row_text in each row.
+        """
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
 
     def test_can_start_a_list_and_retrieve_it_later(self):
+        """
+        Test that each user gets own URL where list can be retrieved later.
+
+        Ensures that each user sees correct title on page, can enter items,
+        and items are visible after entry. Also checks that a new user gets
+        his/her own list that does not include list items from other users.
+        """
         # Edith has heard about a cool new online to-do app.
         # She goes to check out its homepage.
         self.browser.get(self.server_url)
@@ -116,6 +151,12 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # Satisfied, they both go back to sleep
 
     def test_layout_and_styling(self):
+        """
+        Smoke test for style sheets loading.
+
+        Tests that header text and list entries are centered. This
+        serves to verify that CSS in templates is loaded.
+        """
         # Edith goes to the home page
         self.browser.get(self.server_url)
         self.browser.set_window_size(1024, 768)
