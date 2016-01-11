@@ -36,6 +36,7 @@ After navigating to the `superlists` directory, use the pre-packaged development
   ```
   python manage.py test functional_tests
   ```
+
 **Note**: The `StaticLiveServerTestCase` class from which these test classes inherit includes a number of nice features including automatic setup and teardown by way of inheriting from `LiveServerTestCase` and truncation of the database tables by way of inheriting from `TransationTestCase`.
 
 ###Unit Tests
@@ -44,4 +45,5 @@ After navigating to the `superlists` directory, use the pre-packaged development
   ```
   python manage.py test lists.tests
   ```
+
 **Note**: The Django `TestCase` class used in these tests inherits from python's `unittest` module but adds the benefit of running each test as a transaction, providing isolation. Additionally, this only tests this lists app within Superlists. If more apps are added, each will be tested separately using dot notation or linked into the `manage.py test` runner.
